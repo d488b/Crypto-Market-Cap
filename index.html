@@ -16,6 +16,15 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <!-- Additional files for the Highslide popup effect -->
+    <script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
+    <script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112760236-1"></script>
     <script>
@@ -36,9 +45,15 @@
             <h2 class="col-xs-12">
                 Cryptocurrency Market Capitalizations
             </h2>
-            <h5>$USD</h5>
+            <h5><span id="cryptoName" style="font-weight:bold;font-size:40px"></span> ($USD)</h5>
+            <div id="graphContainer" class='hide'>
+                <button type="button" class="close" aria-label="Close" style="float:right" onclick="$('#graphContainer').addClass('hide');$('#cryptoName').html('');">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div id='graphData' style='min-width: 310px; height: 400px; margin: 0 auto'></div>
+            </div>
         </div>
-        <div class="row">
+            <div class="row">
             <div class="col-xs-12" style="padding:0">
                 <table id="dataTable" class="table table-bordered hover" style="margin:0 auto">
                     <thead id="tableHeader">
@@ -73,7 +88,7 @@
                     var numFormat1 = data[i].mktcap.toLocaleString("en");
                     var numFormat2 = data[i].supply.toLocaleString("en");
                     var lowerCaseName = data[i].long.toLowerCase();
-                    items.push("<tr><td>" + [i+1] + "</td><td> <span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</td><td> $" + numFormat + "</td><td> $" + numFormat1 + "</td><td>" + numFormat2 + "</td><td class='marketChange'>" + data[i].cap24hrChange + "% </td></tr>");
+                    items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td> $" + numFormat + "</td><td> $" + numFormat1 + "</td><td>" + numFormat2 + "</td><td class='marketChange'>" + data[i].cap24hrChange + "% </td></tr>");
                 }
                 $("<tbody/>", {
                     "class": "mainTable",
@@ -83,7 +98,7 @@
             complete: function() {
                 $("#loading").addClass("hide");
                 $('#dataTable').DataTable({
-                    "lengthMenu": [ 20, 50, 75, 100 ],
+                    "lengthMenu": [ 20, 50, 100 ],
                     "order": [[ 3, "desc" ]],
                     language: { search: "" }
                 });
@@ -92,6 +107,91 @@
             }
         });
 
+        var showGraph = function(element) {
+            var shortName = $(element).data('short');
+            var basicLineptions = {
+                chart: {
+                    renderTo: 'graphData',
+                    type: 'line',
+                    marginRight: 130,
+                    marginBottom: 55
+                },
+                title: {
+                    text: '30 Day History',
+                    x: -20
+                },
+                subtitle: {
+                    text: '',
+                    x: -20
+                },
+                yAxis: {
+                    title: {
+                        text: 'Value'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return "$" + this.value/1000000 + "M";
+                        }
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                colors: ['#0000FF', '#5eba7d', '#dce827'],
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        formatter: function() {
+                            return Highcharts.dateFormat('%a %d %b', this.value);
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                        style: {
+                            textShadow: '0 0 3px black',
+                            fontSize: '18px'
+                        },
+                        formatter: function() {
+                            // numberFormat takes your label's value and the decimal places to show
+                            return Highcharts.numberFormat(this.y, 2) + '%';
+                        }
+                    }
+                },
+                tooltip: {
+                    valuePrefix: '$'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -10,
+                    y: 100,
+                    borderWidth: 0
+                },
+                series: [],
+                exporting: {
+                    enabled: false
+                }
+            };
+                $.ajax({
+                    url : 'http://coincap.io/history/30day/' + shortName,
+                    datatype : 'json',
+                    success : function (data) {
+                        $.each(data, function(key, value) {
+                            var series = {};
+                            series.name = key;
+                            series.data = value;
+                            basicLineptions.series.push(series);
+                        });
+                        var chart = new Highcharts.Chart(basicLineptions);
+                        $("#graphContainer").removeClass("hide");
+                        $("#cryptoName").html(shortName);
+                    }
+                });
+        };
 </script>
 </body>
 </html>
