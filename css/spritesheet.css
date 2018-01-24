@@ -5118,7 +5118,8 @@ a:hover {
 .logo_bar {
     background-color: #eee;
     padding-top: 9px;
-    height: 74px;
+    height: 35px;
+    margin-bottom: 20px;
 }
 
 .coinlogo_location {

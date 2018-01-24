@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Crypto Market Cap</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Cryptocurrency market cap made easy."/>
+    <meta name="keywords" content="Crypto, Market, Graphs, Cap"/>
+    <meta name="author" content="Dan Basinski" />
+    <meta name="robots" content="follow"/>
     <link rel="icon" type="image/png" href="imgs/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="css/spritesheet.css">
+    <link rel="stylesheet" type="text/css" href="css/header.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <!-- Latest compiled and minified CSS -->
@@ -36,21 +42,48 @@
     </script>
     <style>
         #tableHeader tr td { font-weight:bold }
+        li a:hover{ color:white }
+        .bold{ font-weight:bold }
     </style>
 </head>
 <body>
+    <div class="header-nightsky">
+        <nav class="navbar">
+            <div class="container">
+                <a class="navbar-brand" href="#"><img src="imgs/logo.png" style="height:40px;position: relative;top: -8px;"></a>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" disabled="disabled">Cryptocurrency Market Capitalizations</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="logo_bar">
+        <div class="body_centered_outer">
+        </div>
+    </div>
     <img src="imgs/spritesheet.png" width="0" height="0" style="display: none">
     <div class="container">
         <div class="row" style="text-align:center;margin-bottom:30px">
-            <h2 class="col-xs-12">
-                Cryptocurrency Market Capitalizations
-            </h2>
             <h5><span id="cryptoName" style="font-weight:bold;font-size:40px"></span> ($USD)</h5>
             <div id="graphContainer" class='hide'>
                 <button type="button" class="close" aria-label="Close" style="float:right" onclick="$('#graphContainer').addClass('hide');$('#cryptoName').html('');">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-danger" onclick="changeGraph('7day');">
+                        <input type="radio" name="options" id="option1" autocomplete="off"> 1 Week
+                    </label>
+                    <label class="btn btn-info active" onclick="changeGraph('30day');">
+                        <input type="radio" name="options" id="option2" autocomplete="off" checked> 30 Days
+                    </label>
+                    <label class="btn btn-primary" onclick="changeGraph('365day');">
+                        <input type="radio" name="options" id="option3" autocomplete="off"> 1 Year
+                    </label>
+                </div>
                 <div id='graphData' style='min-width: 310px; height: 400px; margin: 0 auto'></div>
+                <span style="float:right;margin-top:25px;font-size:10px">*Legend values clickable</span>
             </div>
         </div>
             <div class="row">
@@ -75,123 +108,6 @@
             </div>
         </div>
     </div>
-<script>
-        $.ajax({
-            url: "http://coincap.io/front",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                var items = [];
-                var len = data.length;
-                for (var i = 0; i < len; i++) {
-                    var numFormat = data[i].price.toLocaleString("en");
-                    var numFormat1 = data[i].mktcap.toLocaleString("en");
-                    var numFormat2 = data[i].supply.toLocaleString("en");
-                    var lowerCaseName = data[i].long.toLowerCase();
-                    items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td> $" + numFormat + "</td><td> $" + numFormat1 + "</td><td>" + numFormat2 + "</td><td class='marketChange'>" + data[i].cap24hrChange + "% </td></tr>");
-                }
-                $("<tbody/>", {
-                    "class": "mainTable",
-                    html: items.join("")
-                }).insertAfter("#tableHeader");
-            },
-            complete: function() {
-                $("#loading").addClass("hide");
-                $('#dataTable').DataTable({
-                    "lengthMenu": [ 20, 50, 100 ],
-                    "order": [[ 3, "desc" ]],
-                    language: { search: "" }
-                });
-                $('#dataTable_filter input[type="search"]').attr('placeholder', 'Search for coins');
-                $('#dataTable_filter input[type="search"]').css("padding-left","9px");
-            }
-        });
-
-        var showGraph = function(element) {
-            var shortName = $(element).data('short');
-            var basicLineptions = {
-                chart: {
-                    renderTo: 'graphData',
-                    type: 'line',
-                    marginRight: 130,
-                    marginBottom: 55
-                },
-                title: {
-                    text: '30 Day History',
-                    x: -20
-                },
-                subtitle: {
-                    text: '',
-                    x: -20
-                },
-                yAxis: {
-                    title: {
-                        text: 'Value'
-                    },
-                    labels: {
-                        formatter: function () {
-                            return "$" + this.value/1000000 + "M";
-                        }
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
-                },
-                colors: ['#0000FF', '#5eba7d', '#dce827'],
-                xAxis: {
-                    type: 'datetime',
-                    labels: {
-                        formatter: function() {
-                            return Highcharts.dateFormat('%a %d %b', this.value);
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                        style: {
-                            textShadow: '0 0 3px black',
-                            fontSize: '18px'
-                        },
-                        formatter: function() {
-                            // numberFormat takes your label's value and the decimal places to show
-                            return Highcharts.numberFormat(this.y, 2) + '%';
-                        }
-                    }
-                },
-                tooltip: {
-                    valuePrefix: '$'
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -10,
-                    y: 100,
-                    borderWidth: 0
-                },
-                series: [],
-                exporting: {
-                    enabled: false
-                }
-            };
-                $.ajax({
-                    url : 'http://coincap.io/history/30day/' + shortName,
-                    datatype : 'json',
-                    success : function (data) {
-                        $.each(data, function(key, value) {
-                            var series = {};
-                            series.name = key;
-                            series.data = value;
-                            basicLineptions.series.push(series);
-                        });
-                        var chart = new Highcharts.Chart(basicLineptions);
-                        $("#graphContainer").removeClass("hide");
-                        $("#cryptoName").html(shortName);
-                    }
-                });
-        };
-</script>
+    <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>
