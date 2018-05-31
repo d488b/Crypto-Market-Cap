@@ -24,7 +24,12 @@ $.ajax({
             var numFormat1 = data[i].mktcap.toLocaleString("en");
             var numFormat2 = data[i].supply.toLocaleString("en");
             var lowerCaseName = data[i].long.toLowerCase();
-            items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td> $" + numFormat + "</td><td> $" + numFormat1 + "</td><td>" + numFormat2 + "</td><td class='marketChange'>" + data[i].cap24hrChange + "% </td></tr>");
+            var dayChange = data[i].cap24hrChange.toLocaleString("en");
+            if(dayChange.indexOf('-') > -1){
+                items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td class='red'> $" + numFormat + "</td><td> $" + numFormat1 + "</td><td>" + numFormat2 + "</td><td class='red'>" + data[i].cap24hrChange + "% </td></tr>");
+            } else {
+                items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td class='green'> $" + numFormat + "</td><td> $" + numFormat1 + "</td><td>" + numFormat2 + "</td><td class='green'>" + data[i].cap24hrChange + "% </td></tr>");
+            }
         }
         $("<tbody/>", {
             "class": "mainTable",

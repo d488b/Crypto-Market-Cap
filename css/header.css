@@ -2,6 +2,11 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+.green { color:#6CA82E }
+.red { color:#ff0000 }
+
+td { color:#777 }
+
 .header-nightsky {
     color: white;
     background: url("../imgs/nightsky.jpg") no-repeat;
