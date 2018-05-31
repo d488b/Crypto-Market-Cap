@@ -3,10 +3,10 @@ $.ajax({
     type: "GET",
     dataType: "json",
     success: function (data) {
-        var format1 = data.btcCap.toLocaleString("en");
-        var format2 = data.btcPrice.toLocaleString("en");
-        var format3 = data.totalCap.toLocaleString("en");
-        var format4 = data.altCap.toLocaleString("en");
+        var format1 = data.btcCap.toLocaleString("en").split('.')[0];
+        var format2 = data.btcPrice.toLocaleString("en").split('.')[0];
+        var format3 = data.totalCap.toLocaleString("en").split('.')[0];
+        var format4 = data.altCap.toLocaleString("en").split('.')[0];
         var html = "";
         html += '<div><span class="bold">Total Market Cap:</span> $' + format3 + ' <span class="bold">Bitcoin Price:</span> $' + format2 + '' + ' <span class="bold">Bitcoin Cap:</span> $' + format1 + ' <span class="bold">Alt Cap:</span> $' + format4 + '</div>' ;
         $(".body_centered_outer").append(html);
@@ -20,15 +20,18 @@ $.ajax({
         var items = [];
         var len = data.length;
         for (var i = 0; i < len; i++) {
-            var numFormat = data[i].price.toLocaleString("en");
-            var numFormat1 = data[i].mktcap.toLocaleString("en");
+            var numFormat = data[i].price.toLocaleString(undefined, {
+                minimumFractionDigits: 6,
+                maximumFractionDigits: 6
+            });
+            var numFormat1 = data[i].mktcap.toLocaleString("en").split('.')[0];
             var numFormat2 = data[i].supply.toLocaleString("en");
             var lowerCaseName = data[i].long.toLowerCase();
             var dayChange = data[i].cap24hrChange.toLocaleString("en");
             if(dayChange.indexOf('-') > -1){
-                items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td><a class='red' href='#' onclick='showGraph(this);' style='text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat1 + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'>" + numFormat2 + "</a></td><td><a class='red' href='#' onclick='showGraph(this);' style='text-decoration: none;' data-short='"+data[i].short+"'>" + data[i].cap24hrChange + "% </a></td></tr>");
+                items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td><a class='red' href='#' onclick='showGraph(this);' style='text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat1 + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'>" + numFormat2 + "</a></td><td><a class='red' href='#' onclick='showGraph(this);' style='text-decoration: none;' data-short='"+data[i].short+"'>" + data[i].cap24hrChange.toFixed(2) + "% </a></td></tr>");
             } else {
-                items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td><a class='green' href='#' onclick='showGraph(this); ' style='text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat1 + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'>" + numFormat2 + "</a></td><td><a class='green' href='#' onclick='showGraph(this);' style='text-decoration: none;' data-short='"+data[i].short+"'>" + data[i].cap24hrChange + "% </a></td></tr>");
+                items.push("<tr><td>" + [i+1] + "</td><td> <a href='#' onclick='showGraph(this);' data-short='"+data[i].short+"'><span class='sprite sprite-" + lowerCaseName + " small_coin_logo'></span>" + data[i].long + " - " + data[i].short + "</a></td><td><a class='green' href='#' onclick='showGraph(this); ' style='text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'> $" + numFormat1 + "</a></td><td><a href='#' onclick='showGraph(this);' style='color:#777;text-decoration: none;' data-short='"+data[i].short+"'>" + numFormat2 + "</a></td><td><a class='green' href='#' onclick='showGraph(this);' style='text-decoration: none;' data-short='"+data[i].short+"'>" + data[i].cap24hrChange.toFixed(2) + "% </a></td></tr>");
             }
         }
         $("<tbody/>", {
@@ -39,9 +42,11 @@ $.ajax({
     complete: function() {
         $("#loading").addClass("hide");
         $('#dataTable').DataTable({
+            fixedHeader: true,
             "lengthMenu": [ 20, 50, 100 ],
             "order": [[ 3, "desc" ]],
             language: { search: "" }
+
         });
         $('#dataTable_filter input[type="search"]').attr('placeholder', 'Search for coins');
         $('#dataTable_filter input[type="search"]').css("padding-left","9px");
