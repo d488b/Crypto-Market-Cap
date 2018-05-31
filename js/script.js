@@ -44,6 +44,7 @@ $.ajax({
         $('#dataTable').DataTable({
             fixedHeader: true,
             "lengthMenu": [ 20, 50, 100 ],
+            "pageLength": 50,
             "order": [[ 3, "desc" ]],
             language: { search: "" }
 
