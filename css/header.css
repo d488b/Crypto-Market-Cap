@@ -14,6 +14,8 @@ td { color:#777 }
     background-position: bottom;
 }
 
+.navbar-collapse { padding:0 !important }
+
 .header-nightsky .navbar-nav>li>a {
     color: white;
     font-size: 18px;
@@ -43,7 +45,7 @@ td { color:#777 }
 }
 
 .header-nightsky .navbar-nav>li {
-    margin-right: 20px;
+    margin-right: 0px;
 }
 
 .header-nightsky .navbar-nav {
@@ -140,3 +142,7 @@ td { color:#777 }
         font-size: 42px;
     }
 }
+
+.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand { margin-left: -30px !important; }
+
+.navbar-right { margin-right: -30px !important; }
