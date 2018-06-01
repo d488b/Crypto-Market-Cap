@@ -21,10 +21,7 @@ $.ajax({
         var items = [];
         var len = data.length;
         for (var i = 0; i < len; i++) {
-            var numFormat = data[i].price.toLocaleString(undefined, {
-                minimumFractionDigits: 6,
-                maximumFractionDigits: 6
-            });
+            var numFormat = data[i].price.toFixed(Math.max(2, (data[i].price.toString().split('.')[1] || []).length));
             var numFormat1 = data[i].mktcap.toLocaleString("en").split('.')[0];
             var numFormat2 = data[i].supply.toLocaleString("en");
             var lowerCaseName = data[i].long.toLowerCase();
@@ -47,8 +44,7 @@ $.ajax({
             "lengthMenu": [ 20, 50, 100 ],
             "pageLength": 50,
             "order": [[ 3, "desc" ]],
-            language: { search: "" }
-
+            language: { search: ""}
         });
         $('#dataTable_filter input[type="search"]').attr('placeholder', 'Search for coins');
         $('#dataTable_filter input[type="search"]').css("padding-left","9px");
