@@ -1,5 +1,5 @@
 $.ajax({
-    url: "http://coincap.io/global",
+    url: "https://coincap.io/global",
     type: "GET",
     dataType: "json",
     success: function (data) {
@@ -7,13 +7,14 @@ $.ajax({
         var format2 = data.btcPrice.toLocaleString("en").split('.')[0];
         var format3 = data.totalCap.toLocaleString("en").split('.')[0];
         var format4 = data.altCap.toLocaleString("en").split('.')[0];
+        console.log('btc price:'+format2);
         var html = "";
         html += '<div><span class="bold">Total Market Cap:</span> $' + format3 + ' <span class="bold">Bitcoin Price:</span> $' + format2 + '' + ' <span class="bold">Bitcoin Cap:</span> $' + format1 + ' <span class="bold">Alt Cap:</span> $' + format4 + '</div>' ;
         $(".body_centered_outer").append(html);
     }
 });
 $.ajax({
-    url: "http://coincap.io/front",
+    url: "https://coincap.io/front",
     type: "GET",
     dataType: "json",
     success: function (data) {
@@ -121,7 +122,7 @@ var showGraph = function(element) {
         }
     };
     $.ajax({
-        url : 'http://coincap.io/history/30day/' + shortName,
+        url : 'https://coincap.io/history/30day/' + shortName,
         datatype : 'json',
         success : function (data) {
             $.each(data, function(key, value) {
@@ -216,7 +217,7 @@ var changeGraph = function(string) {
         }
     };
     $.ajax({
-        url : 'http://coincap.io/history/' + string + '/' + cryptoName2,
+        url : 'https://coincap.io/history/' + string + '/' + cryptoName2,
         datatype : 'json',
         success : function (data) {
             $.each(data, function(key, value) {
