@@ -50,6 +50,18 @@
         .bold{ font-weight:bold }
         .container{width:1200px}
         body{min-width:1300px}
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+        #footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 100px;
+            width: 100%;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -70,7 +82,7 @@
         </div>
     </div>
     <img src="imgs/spritesheet.png" width="0" height="0" style="display: none" alt="Crypto Logos">
-    <div class="container" style="min-height:500px">
+    <div class="container">
         <div class="row" style="text-align:center;margin-bottom:30px">
             <div id="graphContainer" class='hide'>
                 <h5><span id="cryptoName" style="font-weight:bold;font-size:40px"></span> ($USD)</h5>
