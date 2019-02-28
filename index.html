@@ -46,20 +46,22 @@
     </script>
     <style>
         #tableHeader tr td { font-weight:bold }
-        li a:hover{ color:white }
-        .bold{ font-weight:bold }
-        .container{width:1200px}
-        body{min-width:1300px}
+        li a:hover { color:white }
+        .bold { font-weight:bold }
+        .container { width:1200px }
+        body { min-width:1300px }
         html {
             position: relative;
             min-height: 100%;
         }
         #footer {
-            position: absolute;
-            left: 0;
-            bottom: 0;
             overflow: hidden;
             min-width: 1300px;
+        }
+        @media only screen and (max-width: 1240px) {
+            #mainContent {
+                min-height: 2465px;
+            }
         }
     </style>
 </head>
@@ -81,7 +83,7 @@
         </div>
     </div>
     <img src="imgs/spritesheet.png" width="0" height="0" style="display: none" alt="Crypto Logos">
-    <div class="container" style="margin-bottom:120px">
+    <div class="container" id="mainContent">
         <div class="row" style="text-align:center;margin-bottom:30px">
             <div id="graphContainer" class='hide'>
                 <h5><span id="cryptoName" style="font-weight:bold;font-size:40px"></span> ($USD)</h5>

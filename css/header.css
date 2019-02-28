@@ -11,7 +11,6 @@ td { color:#777 }
     color: white;
     background: url("../imgs/nightsky.jpg") no-repeat;
     background-size: cover;
-    background-position: bottom;
 }
 
 .navbar-collapse { padding:0 !important }
