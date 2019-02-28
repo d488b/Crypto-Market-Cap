@@ -17,8 +17,6 @@
     margin: 0;
 }
 
-/* Footer links */
-
 .footer-distributed p.footer-links{
     font-size:18px;
     font-weight: bold;
@@ -54,8 +52,6 @@
 
     margin-left: 3px;
 }
-
-/* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 1200px) {
 

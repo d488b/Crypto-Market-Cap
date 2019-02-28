@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>DB Crypto Market Cap</title>
-    <meta name="description" content="Cryptocurrency Prices & Market Cap made easy."/>
-    <meta name="keywords" content="Crypto, Market, Graphs, Cap"/>
+    <meta name="description" content="Cryptocurrency Prices & Market Cap made easy." />
+    <meta name="keywords" content="Crypto, Market, Graphs, Cap" />
     <meta name="author" content="Dan Basinski" />
-    <meta name="robots" content="follow"/>
+    <meta name="robots" content="follow" />
     <link rel="icon" type="image/png" href="imgs/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -27,7 +28,7 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/fh-3.1.3/r-2.2.1/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/fh-3.1.3/r-2.2.1/datatables.min.css" />
 
     <script src="https://cdn.datatables.net/v/dt/dt-1.10.16/fh-3.1.3/r-2.2.1/datatables.min.js"></script>
 
@@ -39,25 +40,45 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112760236-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
 
         gtag('config', 'UA-112760236-1');
     </script>
     <style>
-        #tableHeader tr td { font-weight:bold }
-        li a:hover { color:white }
-        .bold { font-weight:bold }
-        .container { width:1200px }
-        body { min-width:1300px }
+        #tableHeader tr td {
+            font-weight: bold
+        }
+
+        li a:hover {
+            color: white
+        }
+
+        .bold {
+            font-weight: bold
+        }
+
+        .container {
+            width: 1200px
+        }
+
+        body {
+            min-width: 1300px
+        }
+
         html {
             position: relative;
             min-height: 100%;
         }
+
         #footer {
             overflow: hidden;
             min-width: 1300px;
         }
+
         @media only screen and (max-width: 1240px) {
             #mainContent {
                 min-height: 2465px;
@@ -65,86 +86,88 @@
         }
     </style>
 </head>
+
 <body>
-    <div class="header-nightsky">
-        <nav class="navbar">
-            <div class="container">
-                <a class="navbar-brand" href="#"><img src="imgs/logo.png" style="height:40px;position: relative;top: -8px;" alt="DB Crypto"></a>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Cryptocurrency Market Capitalizations</a></li>
-                    </ul>
-                </div>
+<div class="header-nightsky">
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="imgs/logo.png" style="height:40px;position: relative;top: -8px;" alt="DB Crypto"></a>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Cryptocurrency Market Capitalizations</a></li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
+</div>
+<div class="logo_bar">
+    <div class="body_centered_outer">
     </div>
-    <div class="logo_bar">
-        <div class="body_centered_outer">
-        </div>
-    </div>
-    <img src="imgs/spritesheet.png" width="0" height="0" style="display: none" alt="Crypto Logos">
-    <div class="container" id="mainContent">
-        <div class="row" style="text-align:center;margin-bottom:30px">
-            <div id="graphContainer" class='hide'>
-                <h5><span id="cryptoName" style="font-weight:bold;font-size:40px"></span> ($USD)</h5>
-                <button type="button" class="close" aria-label="Close" style="float:right" onclick="$('#graphContainer').addClass('hide');$('#cryptoName').html('');">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-danger" onclick="changeGraph('7day');">
-                        <input type="radio" name="options" id="option1"> 1 Week
-                    </label>
-                    <label class="btn btn-info active" onclick="changeGraph('30day');">
-                        <input type="radio" name="options" id="option2" checked> 30 Days
-                    </label>
-                    <label class="btn btn-primary" onclick="changeGraph('365day');">
-                        <input type="radio" name="options" id="option3"> 1 Year
-                    </label>
-                </div>
-                <div id='graphData' style='min-width: 310px; height: 400px; margin: 0 auto'></div>
-                <span style="float:right;margin-top:25px;font-size:10px">*Legend values clickable</span>
+</div>
+<img src="imgs/spritesheet.png" width="0" height="0" style="display: none" alt="Crypto Logos">
+<div class="container" id="mainContent">
+    <div class="row" style="text-align:center;margin-bottom:30px">
+        <div id="graphContainer" class='hide'>
+            <h5><span id="cryptoName" style="font-weight:bold;font-size:40px"></span> ($USD)</h5>
+            <button type="button" class="close" aria-label="Close" style="float:right" onclick="$('#graphContainer').addClass('hide');$('#cryptoName').html('');">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-danger" onclick="changeGraph('7day');">
+                    <input type="radio" name="options" id="option1"> 1 Week
+                </label>
+                <label class="btn btn-info active" onclick="changeGraph('30day');">
+                    <input type="radio" name="options" id="option2" checked> 30 Days
+                </label>
+                <label class="btn btn-primary" onclick="changeGraph('365day');">
+                    <input type="radio" name="options" id="option3"> 1 Year
+                </label>
             </div>
-        </div>
-            <div class="row">
-            <div class="col-xs-12" style="padding:0">
-                <table id="dataTable" class="table table-bordered hover" style="margin:0 auto">
-                    <thead id="tableHeader">
-                        <tr>
-                            <td>#</td>
-                            <td>Name</td>
-                            <td>Price</td>
-                            <td>Market Cap</td>
-                            <td>Available Supply</td>
-                            <td>24 HR % Change</td>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12" style="text-align:center;margin-top:50px">
-                <img src="imgs/loading.gif" style="height:200px;margin-bottom:500px;margin-top:150px" id="loading" alt="Loading Image">
-            </div>
+            <div id='graphData' style='min-width: 310px; height: 400px; margin: 0 auto'></div>
+            <span style="float:right;margin-top:25px;font-size:10px">*Legend values clickable</span>
         </div>
     </div>
-    <footer class="footer-distributed" id="footer">
-
-        <div class="footer-right">
-            <a href="https://www.linkedin.com/in/dan-basinski-69a45a79/" target="_blank"><i class="fa fa-linkedin"></i></a>
-            <a href="https://github.com/d488b" target="_blank"><i class="fa fa-github"></i></a>
+    <div class="row">
+        <div class="col-xs-12" style="padding:0">
+            <table id="dataTable" class="table table-bordered hover" style="margin:0 auto">
+                <thead id="tableHeader">
+                <tr>
+                    <td>#</td>
+                    <td>Name</td>
+                    <td>Price</td>
+                    <td>Market Cap</td>
+                    <td>Available Supply</td>
+                    <td>24 HR % Change</td>
+                </tr>
+                </thead>
+            </table>
         </div>
-
-        <div class="footer-left">
-
-            <p>DB Crypto Market Cap</p>
-
-            <p class="footer-links">
-                <a href="#">Back to top</a>
-            </p>
-
+    </div>
+    <div class="row">
+        <div class="col-xs-12" style="text-align:center;margin-top:50px">
+            <img src="imgs/loading.gif" style="height:200px;margin-bottom:500px;margin-top:150px" id="loading" alt="Loading Image">
         </div>
+    </div>
+</div>
+<footer class="footer-distributed" id="footer">
 
-    </footer>
-    <script src="js/script.js"></script>
+    <div class="footer-right">
+        <a href="https://www.linkedin.com/in/dan-basinski-69a45a79/" target="_blank"><i class="fa fa-linkedin"></i></a>
+        <a href="https://github.com/d488b" target="_blank"><i class="fa fa-github"></i></a>
+    </div>
+
+    <div class="footer-left">
+
+        <p>DB Crypto Market Cap</p>
+
+        <p class="footer-links">
+            <a href="#">Back to top</a>
+        </p>
+
+    </div>
+
+</footer>
+<script src="js/script.js"></script>
 </body>
+
 </html>
