@@ -45,7 +45,7 @@ $.ajax({
             "order": [[ 3, "desc" ]],
             language: { search: ""}
         });
-        $('#dataTable_filter input[type="search"]').attr('placeholder', 'Search for coins');
+        $('#dataTable_filter input[type="search"]').attr('placeholder', 'Search');
         $('#dataTable_filter input[type="search"]').css("padding-left","9px");
     }
 });
